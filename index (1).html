@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#b8869c">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rosart">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Rosart • Calculadora</title>
+<style>
+:root{--p:#b8869c;--pd:#96677b;--pl:#f5eef1;--bg:#faf6f8;--tx:#3d2b33;--mut:#8a7480}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+header{background:linear-gradient(135deg,var(--p),var(--pd));color:#fff;text-align:center;padding:calc(28px + env(safe-area-inset-top,0px)) 16px 24px;border-radius:0 0 24px 24px;box-shadow:0 4px 14px rgba(150,103,123,.3)}
+header h1{margin:0;font-size:2rem;letter-spacing:.06em;font-weight:700}
+header p{margin:6px 0 0;font-size:.9rem;opacity:.92}
+main{max-width:560px;margin:0 auto;padding:16px}
+section{background:#fff;border-radius:16px;padding:16px;margin-bottom:16px;box-shadow:0 2px 10px rgba(150,103,123,.12)}
+h2{margin:0 0 12px;font-size:1.1rem;color:var(--pd)}
+.material{background:var(--pl);border-radius:12px;padding:12px;margin-bottom:12px}
+.row{display:flex;gap:8px}
+.row>*{flex:1;min-width:0}
+label{display:block;font-size:.75rem;color:var(--mut);margin:8px 0 4px;font-weight:600}
+input,select{width:100%;font-size:16px;padding:11px 10px;border:1.5px solid #e6d3db;border-radius:10px;background:#fff;color:var(--tx);font-family:inherit;-webkit-appearance:none;appearance:none;outline:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--pd) 50%),linear-gradient(135deg,var(--pd) 50%,transparent 50%);background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:28px}
+input:focus,select:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(184,134,156,.25)}
+.mhead{display:flex;justify-content:space-between;align-items:center}
+.mhead span{font-weight:700;color:var(--pd);font-size:.85rem}
+.del{background:none;border:none;color:var(--pd);font-size:.8rem;font-weight:600;padding:8px;cursor:pointer;border-radius:8px}
+.sub{margin-top:10px;display:flex;justify-content:space-between;align-items:center;background:#fff;border-radius:10px;padding:10px 12px;font-size:.85rem;color:var(--mut)}
+.sub strong{color:var(--pd);font-size:1.05rem}
+.add{width:100%;background:var(--p);color:#fff;border:none;border-radius:12px;padding:14px;font-size:1rem;font-weight:700;cursor:pointer;touch-action:manipulation}
+.add:active{background:var(--pd)}
+.result{background:linear-gradient(135deg,var(--pd),var(--p));color:#fff}
+.result h2{color:#fff}
+.line{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.25);font-size:.95rem}
+.line b{font-weight:700}
+.final{margin-top:12px;background:#fff;color:var(--pd);border-radius:12px;padding:14px;text-align:center}
+.final small{display:block;font-size:.8rem;color:var(--mut)}
+.final div{font-size:1.9rem;font-weight:800;margin-top:2px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Rosart</h1>
+  <p>Por Rosa Diógenes • Calculadora</p>
+</header>
+<main>
+  <section>
+    <h2>1. Custos de Materiais</h2>
+    <div id="materiais">
+      <div class="material">
+        <div class="mhead"><span>Material</span><button type="button" class="del">✕ Excluir</button></div>
+        <label>Nome do Material</label>
+        <input type="text" class="nome" placeholder="Ex: Linha, Botão">
+        <div class="row">
+          <div><label>Quantidade Comprada</label><input type="number" class="qc" inputmode="decimal" step="any" min="0" placeholder="300"></div>
+          <div><label>Unidade</label><select class="uc"><option value="g">g</option><option value="kg">kg</option><option value="m">m</option><option value="cm">cm</option><option value="un">un</option><option value="ml">ml</option></select></div>
+        </div>
+        <label>Valor Pago Total (R$)</label>
+        <input type="number" class="vp" inputmode="decimal" step="any" min="0" placeholder="18,00">
+        <div class="row">
+          <div><label>Quantidade Usada na Peça</label><input type="number" class="qu" inputmode="decimal" step="any" min="0" placeholder="16"></div>
+          <div><label>Unidade de Uso</label><select class="uu"><option value="g">g</option><option value="kg">kg</option><option value="m">m</option><option value="cm">cm</option><option value="un">un</option><option value="ml">ml</option></select></div>
+        </div>
+        <div class="sub"><span>Custo deste material</span><strong class="custo">R$ 0,00</strong></div>
+      </div>
+    </div>
+    <button type="button" class="add" id="btnAdd">+ Adicionar Outro Material</button>
+  </section>
+
+  <section>
+    <h2>2. Mão de Obra e Custos Extras</h2>
+    <label>Tempo Gasto (horas)</label>
+    <input type="number" id="horas" inputmode="decimal" step="any" min="0" placeholder="2.5">
+    <label>Valor da Hora de Trabalho (R$)</label>
+    <input type="number" id="valorHora" inputmode="decimal" step="any" min="0" placeholder="15.00">
+    <label>Custos Extras / Embalagem / Frete (R$)</label>
+    <input type="number" id="extras" inputmode="decimal" step="any" min="0" placeholder="2.00">
+    <label>Margem de Lucro Desejada (%)</label>
+    <input type="number" id="margem" inputmode="decimal" step="any" min="0" placeholder="50">
+  </section>
+
+  <section class="result">
+    <h2>3. Resumo de Resultados</h2>
+    <div class="line"><span>Custo dos Materiais</span><b id="rMat">R$ 0,00</b></div>
+    <div class="line"><span>Mão de Obra</span><b id="rMao">R$ 0,00</b></div>
+    <div class="line"><span>Custo Total de Produção</span><b id="rTotal">R$ 0,00</b></div>
+    <div class="line"><span>Lucro Estimado</span><b id="rLucro">R$ 0,00</b></div>
+    <div class="final"><small>Preço de Venda Sugerido</small><div id="rVenda">R$ 0,00</div></div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var cont = document.getElementById('materiais');
+  var btn = document.getElementById('btnAdd');
+  var moeda = function(v){
+    var s = (isFinite(v) ? v : 0).toFixed(2).replace('.', ',');
+    return 'R$ ' + s.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+  var num = function(el){
+    var v = parseFloat(String(el.value).replace(',', '.'));
+    return isFinite(v) && v > 0 ? v : 0;
+  };
+  // fatores para unidade base (g, m, un, ml)
+  var grupos = {g:['massa',1], kg:['massa',1000], m:['comp',100], cm:['comp',1], un:['un',1], ml:['vol',1]};
+  function proporcao(qc, uc, qu, uu){
+    var a = grupos[uc], b = grupos[uu];
+    if(!qc) return 0;
+    if(a[0] !== b[0]) return 0; // unidades incompatíveis
+    return (qu * b[1]) / (qc * a[1]);
+  }
+  function calcular(){
+    var total = 0;
+    var blocos = cont.querySelectorAll('.material');
+    for(var i = 0; i < blocos.length; i++){
+      var m = blocos[i];
+      var uc = m.querySelector('.uc').value, uu = m.querySelector('.uu').value;
+      var custo = num(m.querySelector('.vp')) * proporcao(num(m.querySelector('.qc')), uc, num(m.querySelector('.qu')), uu);
+      var el = m.querySelector('.custo');
+      var incompat = grupos[uc][0] !== grupos[uu][0];
+      el.textContent = incompat ? 'unidades incompatíveis' : moeda(custo);
+      if(!incompat) total += custo;
+    }
+    var mao = num(document.getElementById('horas')) * num(document.getElementById('valorHora'));
+    var prod = total + mao + num(document.getElementById('extras'));
+    var lucro = prod * num(document.getElementById('margem')) / 100;
+    document.getElementById('rMat').textContent = moeda(total);
+    document.getElementById('rMao').textContent = moeda(mao);
+    document.getElementById('rTotal').textContent = moeda(prod);
+    document.getElementById('rLucro').textContent = moeda(lucro);
+    document.getElementById('rVenda').textContent = moeda(prod + lucro);
+  }
+  function renumerar(){
+    var t = cont.querySelectorAll('.mhead span');
+    for(var i = 0; i < t.length; i++) t[i].textContent = 'Material ' + (i + 1);
+  }
+  function adicionar(){
+    var primeiro = cont.querySelector('.material');
+    var novo = primeiro.cloneNode(true);
+    var campos = novo.querySelectorAll('input');
+    for(var i = 0; i < campos.length; i++) campos[i].value = '';
+    var sels = novo.querySelectorAll('select');
+    for(var j = 0; j < sels.length; j++) sels[j].selectedIndex = 0;
+    novo.querySelector('.custo').textContent = 'R$ 0,00';
+    cont.appendChild(novo);
+    renumerar();
+    calcular();
+    try{
+      novo.scrollIntoView({behavior:'smooth', block:'center'});
+      novo.querySelector('.nome').focus();
+    }catch(err){}
+  }
+  // click é o gatilho principal (funciona em iOS e Android);
+  // touchend é um reforço só para toques "limpos" (sem arrastar a tela)
+  var ultimo = 0, tx = 0, ty = 0;
+  function onAdd(){
+    var agora = Date.now();
+    if(agora - ultimo < 600) return; // evita disparo duplo
+    ultimo = agora;
+    adicionar();
+  }
+  btn.addEventListener('click', onAdd);
+  btn.addEventListener('touchstart', function(e){
+    var t = e.touches[0]; tx = t.clientX; ty = t.clientY;
+  }, {passive:true});
+  btn.addEventListener('touchend', function(e){
+    var t = e.changedTouches[0];
+    if(Math.abs(t.clientX - tx) < 10 && Math.abs(t.clientY - ty) < 10) onAdd();
+  }, {passive:true});
+
+  function excluir(btnDel){
+    var bloco = btnDel.closest('.material');
+    if(cont.querySelectorAll('.material').length > 1){
+      bloco.parentNode.removeChild(bloco);
+    } else {
+      var inp = bloco.querySelectorAll('input');
+      for(var i = 0; i < inp.length; i++) inp[i].value = '';
+      var sels = bloco.querySelectorAll('select');
+      for(var j = 0; j < sels.length; j++) sels[j].selectedIndex = 0;
+    }
+    renumerar();
+    calcular();
+  }
+  var ultDel = 0;
+  function onDel(e){
+    var t = e.target.closest ? e.target.closest('.del') : null;
+    if(!t) return;
+    var agora = Date.now();
+    if(agora - ultDel < 500){ if(e.cancelable) e.preventDefault(); return; }
+    ultDel = agora;
+    if(e.cancelable) e.preventDefault();
+    excluir(t);
+  }
+  cont.addEventListener('click', onDel);
+  cont.addEventListener('touchend', onDel);
+
+  document.addEventListener('input', calcular);
+  document.addEventListener('change', calcular);
+  renumerar();
+  calcular();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
